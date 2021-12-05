@@ -20,7 +20,9 @@ jobs:
       run: ./configure
       
     - name: Install dependencies
-      run: sudo apt-get update
+      run: |
+        sudo apt-get update
+        sudo apt-get -y upgrade
 
     - name: Build
       run: make
