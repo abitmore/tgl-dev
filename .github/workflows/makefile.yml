@@ -1,0 +1,32 @@
+name: Makefile CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-20.04, ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: configure
+      run: ./configure
+      
+    - name: Install dependencies
+      run: sudo apt-get update
+
+    - name: Build
+      run: make
+      
+    - name: Run check
+      run: make check
+      
+    - name: Run distcheck
+      run: make distcheck
