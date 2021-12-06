@@ -1974,13 +1974,24 @@ static void send_file_unencrypted_end (struct tgl_state *TLS, struct send_file *
   }
   if (f->flags & TGL_SEND_MSG_FLAG_DOCUMENT_PHOTO) {
     out_int (CODE_input_media_uploaded_photo);
+    out_int (0); // new param in layer 133 : flags // TODO implement flags
   } else {
+    /*
     if (f->thumb_id > 0) {
       out_int (CODE_input_media_uploaded_thumb_document);
     } else {
       out_int (CODE_input_media_uploaded_document);
     }
+    */
+    out_int (CODE_input_media_uploaded_document);
+    // new param in layer 133 : flags // TODO implement more flags
+    if (f->thumb_id > 0) {
+      out_int (TGL_INPUT_UPLOADED_DOC_FLAG_THUMB);
+    } else {
+      out_int (0);
+    }
   }
+
 
   if (f->size < (16 << 20)) {
     out_int (CODE_input_file);
@@ -1998,6 +2009,15 @@ static void send_file_unencrypted_end (struct tgl_state *TLS, struct send_file *
   }
 
   if (!(f->flags & TGL_SEND_MSG_FLAG_DOCUMENT_PHOTO)) {
+
+    if (f->thumb_id > 0) {
+      out_int (CODE_input_file);
+      out_long (f->thumb_id);
+      out_int (1);
+      out_string ("thumb.jpg");
+      out_string ("");
+    }
+
     out_string (tg_mime_by_filename (f->file_name));
 
     out_int (CODE_vector);
@@ -2039,14 +2059,6 @@ static void send_file_unencrypted_end (struct tgl_state *TLS, struct send_file *
       out_string (s + 1);
     }
 
-    if (f->thumb_id > 0) {
-      out_int (CODE_input_file);
-      out_long (f->thumb_id);
-      out_int (1);
-      out_string ("thumb.jpg");
-      out_string ("");
-    }
-    
     out_string (f->caption ? f->caption : "");
   } else {
     out_string (f->caption ? f->caption : "");

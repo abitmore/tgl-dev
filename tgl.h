@@ -365,6 +365,8 @@ void tgl_dc_iterator_ex (struct tgl_state *TLS, void (*iterator)(struct tgl_dc *
 
 #define TGL_SEND_MSG_FLAG_REPLY(x) (((unsigned long long)x) << 32)
 
+#define TGL_INPUT_UPLOADED_DOC_FLAG_THUMB 4
+
 typedef tgl_peer_id_t tgl_user_id_t;
 typedef tgl_peer_id_t tgl_chat_id_t;
 typedef tgl_peer_id_t tgl_secret_chat_id_t;
