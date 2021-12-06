@@ -1801,12 +1801,15 @@ static struct query_methods get_dialogs_methods = {
 
 static void _tgl_do_get_dialog_list (struct tgl_state *TLS, struct get_dialogs_extra *E,  void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, int size, tgl_peer_id_t peers[], tgl_message_id_t *last_msg_id[], int unread_count[]), void *callback_extra) {
   clear_packet ();
+  /*
   if (E->channels) {
     out_int (CODE_channels_get_dialogs);
     out_int (E->offset);
     out_int (E->limit - E->list_offset);
   } else {
+  */
     out_int (CODE_messages_get_dialogs);
+    out_int (0); // new param in layer 133 : flags:# exclude_pinned:flags.0?true folder_id:flags.1?int
     out_int (E->offset_date);
     out_int (E->offset);
     //out_int (0);
@@ -1816,7 +1819,10 @@ static void _tgl_do_get_dialog_list (struct tgl_state *TLS, struct get_dialogs_e
       out_int (CODE_input_peer_empty);
     }
     out_int (E->limit - E->list_offset);
+    // Note: here we can add a hash for caching
+  /*
   }
+  */
 
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &get_dialogs_methods, E, callback, callback_extra);
 }
