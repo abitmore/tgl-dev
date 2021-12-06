@@ -867,7 +867,8 @@ static int send_code_on_answer (struct tgl_state *TLS, struct query *q, void *D)
   struct tl_ds_auth_sent_code *DS_ASC = D;
 
   char *phone_code_hash = DS_STR_DUP (DS_ASC->phone_code_hash);
-  int registered = DS_BVAL (DS_ASC->phone_registered);;
+  //int registered = DS_BVAL (DS_ASC->phone_registered);;
+  int registered = 1; // Note: it is always required to send auth.signIn in layer 133 // TODO remove it from callback
 
   if (q->callback) {
     ((void (*)(struct tgl_state *, void *, int, int, const char *))(q->callback)) (TLS, q->callback_extra, 1, registered, phone_code_hash);
@@ -883,6 +884,7 @@ static struct query_methods send_code_methods  = {
   .name = "send code"
 };
 
+// auth.sendCode#a677244f phone_number:string api_id:int api_hash:string settings:CodeSettings = auth.SentCode;
 void tgl_do_send_code (struct tgl_state *TLS, const char *phone, int phone_len, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, int registered, const char *hash), void *callback_extra) {
   vlogprintf (E_DEBUG, "sending code to dc %d\n", TLS->dc_working_num);
 
@@ -890,10 +892,12 @@ void tgl_do_send_code (struct tgl_state *TLS, const char *phone, int phone_len, 
   tgl_do_insert_header (TLS);
   out_int (CODE_auth_send_code);
   out_cstring (phone, phone_len);
-  out_int (0);
+  //out_int (0); // Note: removed in layer 133
   out_int (TLS->app_id);
   out_string (TLS->app_hash);
-  out_string ("en");
+  //out_string ("en"); // Note: removed in layer 133
+  // settings : codeSettings#debebe83 flags:# allow_flashcall:flags.0?true current_number:flags.1?true allow_app_hash:flags.4?true = CodeSettings;
+  out_int (0);
 
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_code_methods, NULL, callback, callback_extra);
 }
@@ -914,6 +918,10 @@ static struct query_methods phone_call_methods  = {
 };
 
 void tgl_do_phone_call (struct tgl_state *TLS, const char *phone, int phone_len, const char *hash, int hash_len, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success), void *callback_extra) {
+  vlogprintf (E_NOTICE, "deprecated: proactively requesting to call user\n");
+  // Note: phone call is still possible via CODE_auth_resend_code when it is the `next_type` in auth.sentCode
+
+/*
   vlogprintf (E_DEBUG, "calling user\n");
 
   clear_packet ();
@@ -923,6 +931,7 @@ void tgl_do_phone_call (struct tgl_state *TLS, const char *phone, int phone_len,
   out_cstring (hash, hash_len);
 
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &phone_call_methods, NULL, callback, callback_extra);
+*/
 }
 /* }}} */
 
@@ -5297,11 +5306,13 @@ void tgl_sign_in_result (struct tgl_state *TLS, void *_T, int success, struct tg
 
 void tgl_sign_in_code (struct tgl_state *TLS, const char *code[], void *_T) {
   struct sign_up_extra *E = _T;
+  /*
   if (!strcmp (code[0], "call")) {
     tgl_do_phone_call (TLS, E->phone, E->phone_len, E->hash, E->hash_len, 0, 0);
     TLS->callback.get_values (TLS, tgl_code, "code ('call' for phone call):", 1, tgl_sign_in_code, E);
     return;
   }
+  */
 
   tgl_do_send_code_result (TLS, E->phone, E->phone_len, E->hash, E->hash_len, code[0], strlen (code[0]), tgl_sign_in_result, E);
 }
@@ -5325,11 +5336,13 @@ void tgl_sign_up_result (struct tgl_state *TLS, void *_T, int success, struct tg
 
 void tgl_sign_up_code (struct tgl_state *TLS, const char *code[], void *_T) {
   struct sign_up_extra *E = _T;
+  /*
   if (!strcmp (code[0], "call")) {
     tgl_do_phone_call (TLS, E->phone, E->phone_len, E->hash, E->hash_len, 0, 0);
     TLS->callback.get_values (TLS, tgl_code, "code ('call' for phone call):", 1, tgl_sign_up_code, E);
     return;
   }
+  */
 
   tgl_do_send_code_result_auth (TLS, E->phone, E->phone_len, E->hash, E->hash_len, code[0], strlen (code[0]), E->first_name, E->first_name_len, E->last_name, E->last_name_len, tgl_sign_up_result, E);
 }
