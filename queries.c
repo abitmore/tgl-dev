@@ -1954,12 +1954,12 @@ static void send_avatar_end (struct tgl_state *TLS, struct send_file *f, void *c
   }
 
   if (f->avatar.peer_type != TGL_PEER_USER) {
-    out_int (CODE_input_photo_crop_auto);
+    //out_int (CODE_input_photo_crop_auto);
     tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_msgs_methods, NULL, callback, callback_extra);
   } else {
     out_string ("profile photo");
     out_int (CODE_input_geo_point_empty);
-    out_int (CODE_input_photo_crop_auto);
+    //out_int (CODE_input_photo_crop_auto);
     tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &set_photo_methods, 0, callback, callback_extra);
   }
 }
