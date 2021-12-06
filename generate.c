@@ -2887,6 +2887,23 @@ int parse_tlo_file (void) {
     tps[i]->name = 0;
     for (j = 0; j < tps[i]->constructors_num; j ++) {
       tps[i]->name ^= tps[i]->constructors[j]->name;
+      struct tl_combinator *c = tps[i]->constructors[j];
+      int k;
+      for (k = 0; k < c->args_num; k++) {
+        if (!strcmp (c->args[k]->id, "default")) {
+          char *tmp_id = c->args[k]->id;
+          c->args[k]->id = strndup ("_default", 8);
+          free (tmp_id);
+        } else if (!strcmp (c->args[k]->id, "long")) {
+          char *tmp_id = c->args[k]->id;
+          c->args[k]->id = strndup ("_long", 5);
+          free (tmp_id);
+        } else if (!strcmp (c->args[k]->id, "static")) {
+          char *tmp_id = c->args[k]->id;
+          c->args[k]->id = strndup ("_static", 7);
+          free (tmp_id);
+        }
+      }
     }
   }
  
