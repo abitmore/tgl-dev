@@ -2882,6 +2882,13 @@ void tgl_do_channel_set_username (struct tgl_state *TLS, tgl_peer_id_t id, const
 
 /* {{{ Channel set admin */
 void tgl_do_channel_set_admin (struct tgl_state *TLS, tgl_peer_id_t channel_id, tgl_peer_id_t user_id, int type, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success), void *callback_extra) {
+  // Note: need to replace "int type" with "chatAdminRights".
+  tgl_set_query_error (TLS, EINVAL, "The TGL code which calls channels.editAdmin is not compatible now. To be fixed.");
+  if (callback) {
+    callback (TLS, callback_extra, 0);
+  }
+  return;
+  /*
   clear_packet ();
   out_int (CODE_channels_edit_admin);
   assert (tgl_get_peer_type (channel_id) == TGL_PEER_CHANNEL);
@@ -2904,6 +2911,7 @@ void tgl_do_channel_set_admin (struct tgl_state *TLS, tgl_peer_id_t channel_id, 
     break;
   }
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_msgs_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
