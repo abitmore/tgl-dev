@@ -3537,19 +3537,23 @@ void tgl_do_load_document (struct tgl_state *TLS, struct tgl_document *V, void (
 }
 
 void tgl_do_load_video (struct tgl_state *TLS, struct tgl_document *V, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, const char *filename), void *callback_extra) {
-
+  tgl_do_load_document (TLS, V, callback, callback_extra);
+  /*
   struct download *D = talloc0 (sizeof (*D));
   D->type = CODE_input_video_file_location;
   
   _tgl_do_load_document (TLS, V, D, callback, callback_extra);
+  */
 }
 
 void tgl_do_load_audio (struct tgl_state *TLS, struct tgl_document *V, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, const char *filename), void *callback_extra) {
-  
+  tgl_do_load_document (TLS, V, callback, callback_extra);
+  /*
   struct download *D = talloc0 (sizeof (*D));
   D->type = CODE_input_audio_file_location;
 
   _tgl_do_load_document (TLS, V, D, callback, callback_extra);
+  */
 }
 
 void tgl_do_load_encr_document (struct tgl_state *TLS, struct tgl_encr_document *V, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, const char *filename), void *callback_extra) {
