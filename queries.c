@@ -2849,6 +2849,12 @@ static struct query_methods channels_set_about_methods = {
 };
 
 void tgl_do_channel_set_about (struct tgl_state *TLS, tgl_peer_id_t id, const char *about, int about_len, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "channels_edit_about is deprecated");
+  if (callback) {
+    callback (TLS, callback_extra, 0);
+  }
+  return;
+  /*
   clear_packet ();
   out_int (CODE_channels_edit_about);
   assert (tgl_get_peer_type (id) == TGL_PEER_CHANNEL);
@@ -2857,6 +2863,7 @@ void tgl_do_channel_set_about (struct tgl_state *TLS, tgl_peer_id_t id, const ch
   out_long (id.access_hash);
   out_cstring (about, about_len);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &channels_set_about_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
