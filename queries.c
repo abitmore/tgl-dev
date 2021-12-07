@@ -2540,6 +2540,12 @@ void tgl_do_forward_messages (struct tgl_state *TLS, tgl_peer_id_t id, int n, co
 }
 
 void tgl_do_forward_message (struct tgl_state *TLS, tgl_peer_id_t peer_id, tgl_message_id_t *_msg_id, unsigned long long flags, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, struct tgl_message *M), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "forward_message is deprecated, please use forward_messages");
+  if (callback) {
+    callback (TLS, callback_extra, 0, 0);
+  }
+  return;
+  /*
   tgl_message_id_t msg_id = *_msg_id;
   if (msg_id.peer_type == TGL_PEER_TEMP_ID) {
     msg_id = tgl_convert_temp_msg_id (TLS, msg_id);
@@ -2578,6 +2584,7 @@ void tgl_do_forward_message (struct tgl_state *TLS, tgl_peer_id_t peer_id, tgl_m
 
   out_peer_id (TLS, peer_id);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_msgs_methods, E, callback, callback_extra);
+  */
 }
 
 void tgl_do_send_contact (struct tgl_state *TLS, tgl_peer_id_t id, const char *phone, int phone_len, const char *first_name, int first_name_len, const char *last_name, int last_name_len, unsigned long long flags, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, struct tgl_message *M), void *callback_extra) {
