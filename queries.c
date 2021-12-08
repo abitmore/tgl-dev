@@ -4875,6 +4875,8 @@ void tgl_on_old_pwd (struct tgl_state *TLS, const char *pwd[], void *_T) {
 }
 
 static int set_get_password_on_answer (struct tgl_state *TLS, struct query *q, void *D) {
+  vlogprintf (E_ERROR, "The set_get_password_on_answer function in TGL does not work for layer 133. To be fixed.\n");
+  /*
   struct tl_ds_account_password *DS_AP = D;
 
   char *new_hint = q->extra;
@@ -4905,6 +4907,7 @@ static int set_get_password_on_answer (struct tgl_state *TLS, struct query *q, v
     snprintf (s, 511, "old password (hint %.*s): ", DS_RSTR (DS_AP->hint));
     TLS->callback.get_values (TLS, tgl_cur_and_new_password, s, 3, tgl_on_old_pwd, E);
   }
+  */
   return 0;
 }
 
