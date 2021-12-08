@@ -4397,9 +4397,16 @@ static struct query_methods export_card_methods = {
 };
 
 void tgl_do_export_card (struct tgl_state *TLS, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, int size, int *card), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "contacts_export_card is deprecated");
+  if (callback) {
+    callback (TLS, callback_extra, 0, 0, NULL);
+  }
+  return;
+  /*
   clear_packet ();
   out_int (CODE_contacts_export_card);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &export_card_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
@@ -4422,12 +4429,19 @@ static struct query_methods import_card_methods = {
 };
 
 void tgl_do_import_card (struct tgl_state *TLS, int size, int *card, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, struct tgl_user *U), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "contacts_import_card is deprecated");
+  if (callback) {
+    callback (TLS, callback_extra, 0, NULL);
+  }
+  return;
+  /*
   clear_packet ();
   out_int (CODE_contacts_import_card);
   out_int (CODE_vector);
   out_int (size);
   out_ints (card, size);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &import_card_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
