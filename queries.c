@@ -5050,7 +5050,12 @@ void tgl_do_check_password (struct tgl_state *TLS, void (*callback)(struct tgl_s
 
 /* {{{ send broadcast */
 void tgl_do_send_broadcast (struct tgl_state *TLS, int num, tgl_peer_id_t peer_id[], const char *text, int text_len, unsigned long long flags, void (*callback)(struct tgl_state *TLS, void *extra, int success, int num, struct tgl_message *ML[]), void *callback_extra) {
-
+  tgl_set_query_error (TLS, EINVAL, "messages.sendBroadcast is deprecated");
+  if (callback) {
+    callback (TLS, callback_extra, 0, 0, 0);
+  }
+  return;
+  /*
   assert (num <= 1000);
 
   struct messages_send_extra *E = talloc0 (sizeof (*E));
@@ -5103,6 +5108,7 @@ void tgl_do_send_broadcast (struct tgl_state *TLS, int num, tgl_peer_id_t peer_i
   out_int (CODE_message_media_empty);
 
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_msgs_methods, E, callback, callback_extra);
+  */
 }
 /* }}} */
 
