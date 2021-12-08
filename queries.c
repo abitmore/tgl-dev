@@ -5209,11 +5209,18 @@ static struct query_methods get_tos_methods = {
 };
 
 void tgl_do_get_terms_of_service (struct tgl_state *TLS, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, const char *ans), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "help.getTermsOfService is deprecated, to be fixed with help.getTermsOfServiceUpdate");
+  if (callback) {
+    callback (TLS, callback_extra, 0, 0);
+  }
+  return;
+  /*
   clear_packet ();
 
   out_int (CODE_help_get_terms_of_service);
   out_string ("");
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &get_tos_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
