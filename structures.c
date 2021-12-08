@@ -180,6 +180,8 @@ tgl_peer_id_t tglf_fetch_peer_id (struct tgl_state *TLS, struct tl_ds_peer *DS_P
 
 }
 
+/*
+// Note: fileLocation is deprecated in layer 133
 int tglf_fetch_file_location (struct tgl_state *TLS, struct tgl_file_location *loc, struct tl_ds_file_location *DS_FL) {
   if (!DS_FL) { return 0; }
   loc->dc = DS_LVAL (DS_FL->dc_id);
@@ -188,6 +190,7 @@ int tglf_fetch_file_location (struct tgl_state *TLS, struct tgl_file_location *l
   loc->secret = DS_LVAL (DS_FL->secret);
   return 0;
 }
+*/
 
 int tglf_fetch_user_status (struct tgl_state *TLS, struct tgl_user_status *S, struct tgl_user *U, struct tl_ds_user_status *DS_US) {
   if (!DS_US) { return 0; }
