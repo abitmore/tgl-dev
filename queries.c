@@ -3697,11 +3697,18 @@ static int del_contact_on_answer (struct tgl_state *TLS, struct query *q, void *
 static struct query_methods del_contact_methods = {
   .on_answer = del_contact_on_answer,
   .on_error = q_void_on_error,
-  .type = TYPE_TO_PARAM(contacts_link),
+  //.type = TYPE_TO_PARAM(contacts_link),
+  .type = TYPE_TO_PARAM(updates), // Note: contacts.deleteContact is removed in layer 133, this is for contacts.deleteContacts
   .name = "del contact"
 };
 
 void tgl_do_del_contact (struct tgl_state *TLS, tgl_peer_id_t id, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "The TGL code calls contacts.deleteContact which is deprecated. To be fixed with contacts.deleteContacts, or refactor.");
+  if (callback) {
+    callback (TLS, callback_extra, 0);
+  }
+  return;
+  /*
   if (tgl_get_peer_type (id) != TGL_PEER_USER) {
     tgl_set_query_error (TLS, EINVAL, "id should be user id");
     if (callback) {
@@ -3716,6 +3723,7 @@ void tgl_do_del_contact (struct tgl_state *TLS, tgl_peer_id_t id, void (*callbac
   out_int (tgl_get_peer_id (id));
   out_long (id.access_hash);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &del_contact_methods, 0, callback, callback_extra);
+  */
 }
 /* }}} */
 
