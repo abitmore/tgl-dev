@@ -4197,6 +4197,12 @@ void tgl_do_channel_invite_user (struct tgl_state *TLS, tgl_peer_id_t channel_id
 }
 
 void tgl_do_channel_kick_user (struct tgl_state *TLS, tgl_peer_id_t channel_id, tgl_peer_id_t id, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success), void *callback_extra) {
+  tgl_set_query_error (TLS, EINVAL, "The TGL code calls channels.kickFromChannel which is deprecated. To be fixed with channels.editBanned, or refactor.");
+  if (callback) {
+    callback (TLS, callback_extra, 0);
+  }
+  return;
+  /*
   clear_packet ();
   out_int (CODE_channels_kick_from_channel);
   out_int (CODE_input_channel);
@@ -4209,6 +4215,7 @@ void tgl_do_channel_kick_user (struct tgl_state *TLS, tgl_peer_id_t channel_id, 
 
   out_int (CODE_bool_true);
   tglq_send_query (TLS, TLS->DC_working, packet_ptr - packet_buffer, packet_buffer, &send_msgs_methods, 0, callback, callback_extra);
+  */
 }
 
 /* }}} */
