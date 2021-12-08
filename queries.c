@@ -5601,9 +5601,9 @@ static int callback (struct tgl_state *TLS, struct query *q, void *D) {
 
 static int send_change_code_on_answer (struct tgl_state *TLS, struct query *q, void *D) {
 
-  struct tl_ds_account_sent_change_phone_code *DS_ASCPC= D;
+  struct tl_ds_auth_sent_code *DS_ASC= D;
 
-  char *phone_code_hash = DS_STR_DUP (DS_ASCPC->phone_code_hash);
+  char *phone_code_hash = DS_STR_DUP (DS_ASC->phone_code_hash);
 
   if (q->callback) {
     ((void (*)(struct tgl_state *, void *, int, const char *))(q->callback)) (TLS, q->callback_extra, 1, phone_code_hash);
@@ -5636,7 +5636,7 @@ static struct query_methods set_phone_methods  = {
 static struct query_methods send_change_code_methods  = {
   .on_answer = send_change_code_on_answer,
   .on_error = q_list_on_error,
-  .type = TYPE_TO_PARAM(account_sent_change_phone_code),
+  .type = TYPE_TO_PARAM(auth_sent_code),
   .name = "send change phone code"
 };
 
