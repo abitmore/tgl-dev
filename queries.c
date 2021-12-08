@@ -4044,7 +4044,7 @@ static int get_channel_difference_on_answer (struct tgl_state *TLS, struct query
   E->flags ^= TGLCHF_DIFF;
 
   if (DS_UD->magic == CODE_updates_channel_difference_empty) {
-    bl_do_set_channel_pts (TLS, tgl_get_peer_id (E->id), DS_LVAL (DS_UD->channel_pts));
+    bl_do_set_channel_pts (TLS, tgl_get_peer_id (E->id), DS_LVAL (DS_UD->pts));
 
     vlogprintf (E_DEBUG, "Empty difference. Seq = %d\n", TLS->seq);
     if (q->callback) {
@@ -4080,7 +4080,7 @@ static int get_channel_difference_on_answer (struct tgl_state *TLS, struct query
 
     tfree (ML, ml_pos * sizeof (void *));
 
-    bl_do_set_channel_pts (TLS, tgl_get_peer_id (E->id), DS_LVAL (DS_UD->channel_pts));
+    bl_do_set_channel_pts (TLS, tgl_get_peer_id (E->id), DS_LVAL (DS_UD->pts));
     if (DS_UD->magic != CODE_updates_channel_difference_too_long) {
       if (q->callback) {
         ((void (*)(struct tgl_state *, void *, int))q->callback) (TLS, q->callback_extra, 1);
