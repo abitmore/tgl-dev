@@ -5007,6 +5007,8 @@ static int check_get_password_on_error (struct tgl_state *TLS, struct query *q, 
 }
 
 static int check_get_password_on_answer (struct tgl_state *TLS, struct query *q, void *D) {
+  vlogprintf (E_ERROR, "The check_get_password_on_answer function in TGL does not work for layer 133. To be fixed.\n");
+  /*
   struct tl_ds_account_password *DS_AP = D;
 
   if (DS_AP->magic == CODE_account_no_password) {
@@ -5027,6 +5029,7 @@ static int check_get_password_on_answer (struct tgl_state *TLS, struct query *q,
   E->callback_extra = q->callback_extra;
 
   TLS->callback.get_values (TLS, tgl_cur_password, s, 1, tgl_pwd_got, E);
+  */
   return 0;
 }
 
