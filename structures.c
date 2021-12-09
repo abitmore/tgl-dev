@@ -375,7 +375,12 @@ struct tgl_user *tglf_fetch_alloc_user_full (struct tgl_state *TLS, struct tl_ds
 
   int flags = U->flags;
 
-  if (DS_BVAL (DS_UF->blocked)) {
+  // Note:
+  // In layer 133, the tl_ds_user_full struct doesn't have a magic field, but has a flags field,
+  //   the lowest bit in flags means blocked.
+  // The code here seems to update the 'blocked' bit in tgl_user.flags with the value in tl_ds_user_full.
+  // So we use the bit in flags instead.
+  if (*DS_UF->flags & 0x1) { // TODO update the magic number with a macro
     flags |= TGLUF_BLOCKED;
   } else {
     flags &= ~TGLUF_BLOCKED;
