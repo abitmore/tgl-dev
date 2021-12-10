@@ -641,8 +641,9 @@ void bl_do_user (struct tgl_state *TLS, long long id, long long *access_hash, co
   if (profile_photo) {
     if (U->photo_id != DS_LVAL (profile_photo->photo_id)) {
       U->photo_id = DS_LVAL (profile_photo->photo_id);
-      tglf_fetch_file_location (TLS, &U->photo_big, profile_photo->photo_big);
-      tglf_fetch_file_location (TLS, &U->photo_small, profile_photo->photo_small);
+      // Note: file_location is deprecated in layer 133 // TODO fix code here
+      //tglf_fetch_file_location (TLS, &U->photo_big, profile_photo->photo_big);
+      //tglf_fetch_file_location (TLS, &U->photo_small, profile_photo->photo_small);
       updates |= TGL_UPDATE_PHOTO;
     }
   }
@@ -724,8 +725,9 @@ void bl_do_chat (struct tgl_state *TLS, long long id, const char *title, int tit
 
   if (chat_photo && chat_photo->photo_big) {
     if (DS_LVAL (chat_photo->photo_big->secret) != C->photo_big.secret) {
-      tglf_fetch_file_location (TLS, &C->photo_big, chat_photo->photo_big);
-      tglf_fetch_file_location (TLS, &C->photo_small, chat_photo->photo_small);
+      // Note: file_location is deprecated in layer 133 // TODO fix code here
+      //tglf_fetch_file_location (TLS, &C->photo_big, chat_photo->photo_big);
+      //tglf_fetch_file_location (TLS, &C->photo_small, chat_photo->photo_small);
       updates |= TGL_UPDATE_PHOTO;
     }
   }
@@ -957,8 +959,9 @@ void bl_do_channel (struct tgl_state *TLS, long long id, long long *access_hash,
   
   if (chat_photo) {
     if (chat_photo->photo_big && DS_LVAL (chat_photo->photo_big->secret) != C->photo_big.secret) {
-      tglf_fetch_file_location (TLS, &C->photo_big, chat_photo->photo_big);
-      tglf_fetch_file_location (TLS, &C->photo_small, chat_photo->photo_small);
+      // Note: file_location is deprecated in layer 133 // TODO fix code here
+      //tglf_fetch_file_location (TLS, &C->photo_big, chat_photo->photo_big);
+      //tglf_fetch_file_location (TLS, &C->photo_small, chat_photo->photo_small);
       updates |= TGL_UPDATE_PHOTO;
     }
   }

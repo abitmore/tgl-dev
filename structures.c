@@ -805,7 +805,8 @@ void tglf_fetch_photo_size (struct tgl_state *TLS, struct tgl_photo_size *S, str
     S->size = DS_PS->bytes->len;
   }
 
-  tglf_fetch_file_location (TLS, &S->loc, DS_PS->location);
+  // Note: file_location is deprecated in layer 133
+  //tglf_fetch_file_location (TLS, &S->loc, DS_PS->location);
 }
 
 void tglf_fetch_geo (struct tgl_state *TLS, struct tgl_geo *G, struct tl_ds_geo_point *DS_GP) {
