@@ -122,7 +122,7 @@
 
 typedef struct {
   int peer_type;
-  int peer_id;
+  long long peer_id;
   long long access_hash;
 } tgl_peer_id_t;
 
@@ -393,8 +393,8 @@ struct tgl_channel {
 };
 
 struct tgl_chat_user {
-  int user_id;
-  int inviter_id;
+  long long user_id;
+  long long inviter_id;
   int date;
 };
 
@@ -419,7 +419,7 @@ struct tgl_chat {
   struct tgl_chat_user *user_list;
   int date;
   int version;
-  int admin_id;
+  long long admin_id;
 };
 
 enum tgl_secret_chat_state {
@@ -453,8 +453,8 @@ struct tgl_secret_chat {
   long long pad;
   struct tgl_photo *photo;
   void *extra;
-  int user_id;
-  int admin_id;
+  long long user_id;
+  long long admin_id;
   int date;
   int ttl;
   int layer;
@@ -525,13 +525,13 @@ struct tgl_message_action {
     };
     char *new_title;
     struct tgl_photo *photo;
-    int user;
+    long long user;
     int ttl;
     int layer;
     int read_cnt;
     int delete_cnt;
     int screenshot_cnt;
-    int channel_id;
+    long long channel_id;
     enum tgl_typing_status typing;
     struct {
       int start_seq_no;

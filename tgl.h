@@ -319,11 +319,11 @@ static inline int tgl_get_peer_type (tgl_peer_id_t id) {
   return id.peer_type;
 }
 
-static inline int tgl_get_peer_id (tgl_peer_id_t id) {
+static inline long long tgl_get_peer_id (tgl_peer_id_t id) {
   return id.peer_id;
 }
 
-static inline tgl_peer_id_t tgl_set_peer_id (int type, int id) {
+static inline tgl_peer_id_t tgl_set_peer_id (int type, long long id) {
   tgl_peer_id_t ID;
   ID.peer_id = id;
   ID.peer_type = type;
@@ -332,7 +332,7 @@ static inline tgl_peer_id_t tgl_set_peer_id (int type, int id) {
 }
 
 static inline int tgl_cmp_peer_id (tgl_peer_id_t a, tgl_peer_id_t b) {
-  return memcmp (&a, &b, 8);
+  return memcmp (&a, &b, 12);
 }
 
 void tgl_incr_verbosity (struct tgl_state *TLS);

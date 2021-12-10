@@ -460,7 +460,7 @@ struct tgl_secret_chat *tglf_fetch_alloc_encrypted_chat (struct tgl_state *TLS, 
 
     str_to_256 (g_key, DS_STR (DS_EC->g_a));
 
-    int user_id =  DS_LVAL (DS_EC->participant_id) + DS_LVAL (DS_EC->admin_id) - tgl_get_peer_id (TLS->our_id);
+    long long user_id =  DS_LVAL (DS_EC->participant_id) + DS_LVAL (DS_EC->admin_id) - tgl_get_peer_id (TLS->our_id);
     int r = sc_request;
     bl_do_encr_chat (TLS, tgl_get_peer_id (U->id),
       DS_EC->access_hash,
@@ -1536,24 +1536,25 @@ struct tgl_message *tglf_fetch_alloc_message (struct tgl_state *TLS, struct tl_d
     return NULL;
   }
 
-  tgl_peer_id_t to_id = tglf_fetch_peer_id (TLS, DS_M->to_id);
-  tgl_peer_t *T = tgl_peer_get (TLS, to_id);
+  tgl_peer_id_t peer_id = tglf_fetch_peer_id (TLS, DS_M->peer_id);
+  tgl_peer_t *T = tgl_peer_get (TLS, peer_id);
   if (!T || !(T->flags & TGLPF_CREATED)) {
     tgl_do_get_difference (TLS, 0, 0, 0);
-    vlogprintf (E_NOTICE, "unknown to_id\n");
+    vlogprintf (E_NOTICE, "unknown peer_id %lld\n", tgl_get_peer_id (peer_id));
     return NULL;
   }
   tgl_peer_t *P = T;
 
   tgl_peer_t *F = NULL;
   if (DS_M->from_id) {
-    F = tgl_peer_get (TLS, TGL_MK_USER (DS_LVAL (DS_M->from_id)));
+    tgl_peer_id_t from_id = tglf_fetch_peer_id (TLS, DS_M->from_id);
+    F = tgl_peer_get (TLS, from_id);
     if (!F || !(F->flags & TGLPF_CREATED)) {
       tgl_do_get_difference (TLS, 0, 0, 0);
-      vlogprintf (E_NOTICE, "unknown from_id %d\n", DS_LVAL (DS_M->from_id));
+      vlogprintf (E_NOTICE, "unknown from_id %lld\n", tgl_get_peer_id (from_id));
       return NULL;
     }
-    if (!tgl_cmp_peer_id (to_id, TLS->our_id)) {
+    if (!tgl_cmp_peer_id (peer_id, TLS->our_id)) {
       P = F;
     }
   }
@@ -1605,7 +1606,7 @@ struct tgl_message *tglf_fetch_alloc_message (struct tgl_state *TLS, struct tl_d
       from_id = TGL_MK_USER (0);
     }
 
-    tgl_peer_id_t to_id = T->id;
+    tgl_peer_id_t peer_id = T->id;
 
     tgl_peer_id_t fwd_from_id;
     if (DS_M->fwd_from_id) {
@@ -1616,7 +1617,7 @@ struct tgl_message *tglf_fetch_alloc_message (struct tgl_state *TLS, struct tl_d
 
     bl_do_edit_message (TLS, &msg_id,
       DS_M->from_id ? &from_id : NULL,
-      &to_id,
+      &peer_id,
       DS_M->fwd_from_id ? &fwd_from_id : NULL,
       DS_M->fwd_date,
       DS_M->date,

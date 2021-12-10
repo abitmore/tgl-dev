@@ -557,7 +557,7 @@ void bl_do_encr_chat_exchange (struct tgl_state *TLS, tgl_peer_id_t id, long lon
 }
 /* }}} */
 
-void bl_do_user (struct tgl_state *TLS, int id, long long *access_hash, const char *first_name, int first_name_len, const char *last_name, int last_name_len, const char *phone, int phone_len, const char *username, int username_len, struct tl_ds_photo *photo, struct tl_ds_user_profile_photo *profile_photo, int *last_read_in, int *last_read_out, struct tl_ds_bot_info *bot_info, int flags) /* {{{ */ {
+void bl_do_user (struct tgl_state *TLS, long long id, long long *access_hash, const char *first_name, int first_name_len, const char *last_name, int last_name_len, const char *phone, int phone_len, const char *username, int username_len, struct tl_ds_photo *photo, struct tl_ds_user_profile_photo *profile_photo, int *last_read_in, int *last_read_out, struct tl_ds_bot_info *bot_info, int flags) /* {{{ */ {
   tgl_peer_t *_U = tgl_peer_get (TLS, TGL_MK_USER (id));
 
   unsigned updates = 0;
@@ -671,7 +671,7 @@ void bl_do_user (struct tgl_state *TLS, int id, long long *access_hash, const ch
 }
 /* }}} */
 
-void bl_do_chat (struct tgl_state *TLS, int id, const char *title, int title_len, int *user_num, int *date, int *version, struct tl_ds_vector *participants, struct tl_ds_chat_photo *chat_photo, struct tl_ds_photo *photo, int *admin, int *last_read_in, int *last_read_out, int flags) /* {{{ */ {
+void bl_do_chat (struct tgl_state *TLS, long long id, const char *title, int title_len, int *user_num, int *date, int *version, struct tl_ds_vector *participants, struct tl_ds_chat_photo *chat_photo, struct tl_ds_photo *photo, long long *admin, int *last_read_in, int *last_read_out, int flags) /* {{{ */ {
   tgl_peer_t *_U = tgl_peer_get (TLS, TGL_MK_CHAT (id));
 
   unsigned updates = 0;
@@ -785,7 +785,7 @@ void bl_do_chat (struct tgl_state *TLS, int id, const char *title, int title_len
 }
 /* }}} */
 
-void bl_do_encr_chat (struct tgl_state *TLS, int id, long long *access_hash, int *date, int *admin, int *user_id, void *key, void *g_key, void *first_key_id, int *state, int *ttl, int *layer, int *in_seq_no, int *last_in_seq_no, int *out_seq_no, long long *key_fingerprint, int flags, const char *print_name, int print_name_len) /* {{{ */ {
+void bl_do_encr_chat (struct tgl_state *TLS, long long id, long long *access_hash, int *date, long long *admin, long long *user_id, void *key, void *g_key, void *first_key_id, int *state, int *ttl, int *layer, int *in_seq_no, int *last_in_seq_no, int *out_seq_no, long long *key_fingerprint, int flags, const char *print_name, int print_name_len) /* {{{ */ {
   tgl_peer_t *_U = tgl_peer_get (TLS, TGL_MK_ENCR_CHAT (id));
 
   unsigned updates = 0;
@@ -902,7 +902,7 @@ void bl_do_encr_chat (struct tgl_state *TLS, int id, long long *access_hash, int
 }
 /* }}} */
 
-void bl_do_channel (struct tgl_state *TLS, int id, long long *access_hash, int *date, const char *title, int title_len, const char *username, int username_len, struct tl_ds_chat_photo *chat_photo, struct tl_ds_photo *photo, int *version, char *about, int about_len, int *participants_count, int *admins_count, int *kicked_count, int *last_read_in, int flags) /* {{{ */ {
+void bl_do_channel (struct tgl_state *TLS, long long id, long long *access_hash, int *date, const char *title, int title_len, const char *username, int username_len, struct tl_ds_chat_photo *chat_photo, struct tl_ds_photo *photo, int *version, char *about, int about_len, int *participants_count, int *admins_count, int *kicked_count, int *last_read_in, int flags) /* {{{ */ {
   tgl_peer_t *_U = tgl_peer_get (TLS, TGL_MK_CHANNEL (id));
 
   unsigned updates = 0;

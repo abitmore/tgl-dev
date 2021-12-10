@@ -642,7 +642,7 @@ void tgl_do_create_keys_end (struct tgl_state *TLS, struct tgl_secret_chat *U) {
 }
 
 void tgl_do_send_create_encr_chat (struct tgl_state *TLS, void *x, unsigned char *random, void (*callback)(struct tgl_state *TLS, void *callback_extra, int success, struct tgl_secret_chat *E), void *callback_extra) {
-  int user_id = (long)x;
+  long long user_id = (long long)x;
   int i;
   unsigned char random_here[256];
   tglt_secure_random (random_here, 256);
@@ -679,7 +679,7 @@ void tgl_do_send_create_encr_chat (struct tgl_state *TLS, void *x, unsigned char
   //bl_do_encr_chat_init (TLS, t, user_id, (void *)random, (void *)g_a);
   
   int state = sc_waiting;
-  int our_id = tgl_get_peer_id (TLS->our_id);
+  long long our_id = tgl_get_peer_id (TLS->our_id);
   bl_do_encr_chat (TLS, t, NULL, NULL, &our_id, &user_id, random, NULL, NULL, &state, NULL, NULL, NULL, NULL, NULL, NULL, TGLPF_CREATE | TGLPF_CREATED, NULL, 0);
 
   
@@ -693,7 +693,7 @@ void tgl_do_send_create_encr_chat (struct tgl_state *TLS, void *x, unsigned char
   assert (U);
   
   out_int (CODE_input_user);
-  out_int (E->user_id);
+  out_long (E->user_id);
   out_long (U ? U->user.access_hash : 0);
 
   out_int (tgl_get_peer_id (E->id));
