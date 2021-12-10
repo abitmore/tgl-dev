@@ -810,8 +810,8 @@ void tglf_fetch_photo_size (struct tgl_state *TLS, struct tgl_photo_size *S, str
 }
 
 void tglf_fetch_geo (struct tgl_state *TLS, struct tgl_geo *G, struct tl_ds_geo_point *DS_GP) {
-  G->longitude = DS_LVAL (DS_GP->longitude);
-  G->latitude = DS_LVAL (DS_GP->latitude);
+  G->longitude = DS_LVAL (DS_GP->_long);
+  G->latitude = DS_LVAL (DS_GP->lat);
 }
 
 struct tgl_photo *tglf_fetch_alloc_photo (struct tgl_state *TLS, struct tl_ds_photo *DS_P) {
