@@ -849,6 +849,8 @@ struct tgl_photo *tglf_fetch_alloc_photo (struct tgl_state *TLS, struct tl_ds_ph
   return P;
 }
 
+/*
+// Note: no video in layer 133
 struct tgl_document *tglf_fetch_alloc_video (struct tgl_state *TLS, struct tl_ds_video *DS_V) {
   if (!DS_V) { return NULL; }
 
@@ -914,6 +916,7 @@ struct tgl_document *tglf_fetch_alloc_audio (struct tgl_state *TLS, struct tl_ds
 
   return D;
 }
+*/
 
 void tglf_fetch_document_attribute (struct tgl_state *TLS, struct tgl_document *D, struct tl_ds_document_attribute *DS_DA) {
   switch (DS_DA->magic) {
@@ -1279,6 +1282,8 @@ void tglf_fetch_message_media (struct tgl_state *TLS, struct tgl_message_media *
     M->photo = tglf_fetch_alloc_photo (TLS, DS_MM->photo);
     M->caption = DS_STR_DUP (DS_MM->caption);
     break;
+  /*
+  // Note: no video or audio in layer 133
   case CODE_message_media_video:
   case CODE_message_media_video_l27:
     M->type = tgl_message_media_video;
@@ -1290,6 +1295,7 @@ void tglf_fetch_message_media (struct tgl_state *TLS, struct tgl_message_media *
     M->document = tglf_fetch_alloc_audio (TLS, DS_MM->audio);
     M->caption = DS_STR_DUP (DS_MM->caption);
     break;
+  */
   case CODE_message_media_document:
     M->type = tgl_message_media_document;
     M->document = tglf_fetch_alloc_document (TLS, DS_MM->document);
